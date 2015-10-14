@@ -131,7 +131,11 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 		// Animate
 		var style = this.getStyle();
 		var stylefn = (typeof(style) == 'function') ? style : style.length ? function(){ return style; } : function(){ return [style]; } ;
+		// Layer opacity
+		e.context.save();
 		e.context.globalAlpha = a.opacity;
+		// Retina device
+		var ratio = e.frameState.pixelRatio;
 		for (var i=0, c; c=a.clusters[i]; i++)
 		{	var pt = c.f.getGeometry().getCoordinates();
 			if (a.revers)
@@ -144,12 +148,16 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 			}
 			// Draw feature
 			var st = stylefn(c.f, resolution);
-			/* Preserve layer opacity */
+			/* Preserve layer opacity (globalAlpha) */
 			var geo = new ol.geom.Point(pt);
 			for (var k=0; s=st[k]; k++)
-			{	vectorContext.setImageStyle(s.getImage());
+			{	var imgs = s.getImage();
+				var sc = imgs.getScale(); 
+				imgs.setScale(ratio); // setImageStyle don't check retina
+				vectorContext.setImageStyle(imgs);
 				vectorContext.setTextStyle(s.getText());
 				vectorContext.drawPointGeometry(geo);
+				imgs.setScale(sc);
 			}
 			/*/
 			var f = new ol.Feature(new ol.geom.Point(pt));
@@ -158,7 +166,7 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 			}
 			/**/
 		}
-		e.context.globalAlpha = 1;
+		e.context.restore();
 		// tell OL3 to continue postcompose animation
 		e.frameState.animate = true;
 	}
