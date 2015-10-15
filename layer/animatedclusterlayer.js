@@ -31,6 +31,7 @@ ol.layer.AnimatedCluster = function(opt_options)
 	this.getSource().on('change', this.saveCluster, this);
 	// Animate the cluster
 	this.on('precompose', this.animate, this)
+	this.on('postcompose', this.postanimate, this)
 };
 ol.inherits (ol.layer.AnimatedCluster, ol.layer.Vector);
 
@@ -68,7 +69,6 @@ ol.layer.AnimatedCluster.prototype.stopAnimation = function()
 {	this.animation.start = false;
 	this.animation.cA = [];
 	this.animation.cB = [];
-	this.setOpacity(this.animation.opacity);
 }
 
 /** @private animate the cluster
@@ -110,11 +110,6 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 		{	this.stopAnimation();
 			return;
 		}
-		// Hide the layer (if not done)
-		if (!a.start)
-		{	a.opacity = this.getOpacity();
-			this.setOpacity(0);
-		}
 		// Start animation from now
 		time = a.start = (new Date()).getTime();
 	}
@@ -122,12 +117,13 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 	// Run animation
 	if (a.start)
 	{	var vectorContext = e.vectorContext;
-		var d = this.get('animationMethod')((time - a.start) / duration);
+		var d = (time - a.start) / duration;
 		// Animation ends
 		if (d > 1.0) 
 		{	this.stopAnimation();
 			d = 1;
 		}
+		d = this.get('animationMethod')(d);
 		// Animate
 		var style = this.getStyle();
 		var stylefn = (typeof(style) == 'function') ? style : style.length ? function(){ return style; } : function(){ return [style]; } ;
@@ -169,7 +165,23 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 		e.context.restore();
 		// tell OL3 to continue postcompose animation
 		e.frameState.animate = true;
+
+		// Prevent layer drawing (clip with null rect)
+		e.context.save();
+		e.context.beginPath();
+		e.context.rect(0,0,0,0);
+		e.context.clip();
+		this.clip_ = true;
 	}
 
 	return;
+}
+
+/** @private remove clipping after the layer is drawn
+*/
+ol.layer.AnimatedCluster.prototype.postanimate = function(e)
+{	if (this.clip_)
+	{	e.context.restore();
+		this.clip_ = false;
+	}
 }
