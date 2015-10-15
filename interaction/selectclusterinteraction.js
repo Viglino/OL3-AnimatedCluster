@@ -203,7 +203,7 @@ ol.interaction.SelectCluster.prototype.animateCluster_ = function(center)
 {	// Stop animation (if one is running)
 	if (this.listenerKey_)
 	{	this.overlayLayer_.setVisible(true);
-		ol.Observable.unByKey(this.listenerKey_);;
+		ol.Observable.unByKey(this.listenerKey_);
 	}
 	
 	// Features to animate
@@ -219,6 +219,8 @@ ol.interaction.SelectCluster.prototype.animateCluster_ = function(center)
 	// Animate function
 	function animate(event) 
 	{	var vectorContext = event.vectorContext;
+		// Retina device
+		var ratio = event.frameState.pixelRatio;
 		var res = event.target.getView().getResolution();
 		var e = ol.easing.easeOut((event.frameState.time - start) / duration);
 		for (var i=0, feature; feature = features[i]; i++) if (feature.get('features'))
@@ -229,8 +231,12 @@ ol.interaction.SelectCluster.prototype.animateCluster_ = function(center)
 			// Image style
 			var st = stylefn(feature, res);
 			for (var s=0; s<st.length; s++)
-			{	vectorContext.setImageStyle(st[s].getImage());
+			{	var imgs = st[s].getImage();
+				var sc = imgs.getScale();
+				imgs.setScale(ratio); // setImageStyle don't check retina
+				vectorContext.setImageStyle(imgs);
 				vectorContext.drawPointGeometry(geo, null);
+				imgs.setScale(sc);
 			}
 		}
 		// Stop animation and restore cluster visibility
