@@ -48,7 +48,7 @@ ol.interaction.SelectCluster = function(options)
 			name:'Cluster overlay',
 			updateWhileAnimating: true,
 			updateWhileInteracting: true,
-			dsiplayInLayerSwitch: false,
+			displayInLayerSwitcher: false,
 			style: options.featureStyle
 		});
 
@@ -151,6 +151,9 @@ ol.interaction.SelectCluster.prototype.selectCluster = function (e)
 	var cluster = feature.get('features');
 	// Not a cluster (or just one feature)
 	if (!cluster || cluster.length==1) return;
+	
+	// Remove cluster from selection
+	this.getFeatures().clear();
 
 	var center = feature.getGeometry().getCoordinates();
 	// Pixel size in map unit
