@@ -45,8 +45,10 @@ ol.interaction.SelectCluster = function(options)
 				features: new ol.Collection(),
 				useSpatialIndex: true
 			}),
+			name:'Cluster overlay',
 			updateWhileAnimating: true,
 			updateWhileInteracting: true,
+			dsiplayInLayerSwitch: false,
 			style: options.featureStyle
 		});
 
@@ -97,9 +99,11 @@ ol.interaction.SelectCluster.prototype.setMap = function(map)
 	if (this.map_ && this.map_.getView()) 
 	{	map.getView().un('change:resolution', this.clear, this);
 	}
+	if (this.map_) this.map_.removeLayer(this.overlayLayer_);
 
 	this.map_ = map;
-	this.overlayLayer_.setMap(map);
+	// this.overlayLayer_.setMap(map);
+	map.addLayer(this.overlayLayer_);
 
 	if (map && map.getView()) 
 	{	map.getView().on('change:resolution', this.clear, this);
