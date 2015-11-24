@@ -81,6 +81,7 @@
 			var features=[];
 			for (var i=0; i<nb; ++i)
 			{	features[i]=new ol.Feature(new ol.geom.Point([ext[0]+(ext[2]-ext[0])*Math.random(), ext[1]+(ext[3]-ext[1])*Math.random()]));
+				features[i].set('id',i);
 			}
 			clusterSource.getSource().clear();
 			clusterSource.getSource().addFeatures(features);
@@ -176,7 +177,7 @@
 		{	var c = e.element.get('features');
 			if (c.length==1)
 			{	var feature = c[0];
-				$(".infos").text("One feature selected...");
+				$(".infos").html("One feature selected...<br/>(id="+feature.get('id')+")");
 			}
 			else
 			{	$(".infos").text("Cluster ("+c.length+" features)");
