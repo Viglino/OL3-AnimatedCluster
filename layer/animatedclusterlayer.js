@@ -53,10 +53,11 @@ ol.layer.AnimatedCluster.prototype.saveCluster = function()
 ol.layer.AnimatedCluster.prototype.getClusterForFeature = function(f, cluster)
 {	for (var j=0, c; c=cluster[j]; j++)
 	{	var features = cluster[j].get('features');
-		//if (features.length > 1) 
-		for (var k=0, f2; f2=features[k]; k++)
-		{	if (f===f2) 
-			{	return cluster[j];
+		if (features && features.length) 
+		{	for (var k=0, f2; f2=features[k]; k++)
+			{	if (f===f2) 
+				{	return cluster[j];
+				}
 			}
 		}
 	}
