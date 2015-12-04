@@ -98,9 +98,11 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 		}
 		a.clusters = [];
 		for (var i=0, c0; c0=a.cA[i]; i++)
-		{	var f = c0.get('features')[0];
-			var c = this.getClusterForFeature (f, a.cB);
-			if (c) a.clusters.push({ f:c0, pt:c.getGeometry().getCoordinates() });
+		{	var f = c0.get('features');
+			if (f && f.length) 
+			{	var c = this.getClusterForFeature (f[0], a.cB);
+				if (c) a.clusters.push({ f:c0, pt:c.getGeometry().getCoordinates() });
+			}
 		}
 		// Save state
 		a.resolution = resolution
