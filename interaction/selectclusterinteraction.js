@@ -20,7 +20,7 @@
  * - 'spiral' {bool} option mean you want the feature to be placed on a spiral (or a circle)
  * - 'circleMaxObject' {Number} option is the number of object that can be place on a circle
  * - 'maxObjects' {Number} option is the number of object that can be drawn, other are hidden
- * - 'animation' {bool} option means the cluster will animate when features spread out, default is false
+ * - 'animate' {bool} option means the cluster will animate when features spread out, default is false
  * - 'animationDuration' {Number} option animation duration in ms, default is 500ms
  *
  * @constructor
