@@ -20,7 +20,7 @@
  * - 'spiral' {bool} option mean you want the feature to be placed on a spiral (or a circle)
  * - 'circleMaxObject' {Number} option is the number of object that can be place on a circle
  * - 'maxObjects' {Number} option is the number of object that can be drawn, other are hidden
- * - 'animate' {bool} option means the cluster will animate when features spread out, default is false
+ * - 'animation' {bool} option means the cluster will animate when features spread out, default is false
  * - 'animationDuration' {Number} option animation duration in ms, default is 500ms
  *
  * @constructor
@@ -69,12 +69,14 @@ ol.interaction.SelectCluster = function(options)
 	if (options.filter)
 	{	var fn = options.filter;
 		options.filter = function(f,l)
-		{	if (l===overlay && f.get("selectclusterlink")) return false;
+		{	//if (l===overlay && f.get("selectclusterlink")) return false;
+			if (!l && f.get("selectclusterlink")) return false;
 			else return fn(f,l);
 		}
 	}
 	else options.filter = function(f,l) 
-	{	if (l===overlay && f.get("selectclusterlink")) return false; 
+	{	//if (l===overlay && f.get("selectclusterlink")) return false; 
+		if (!l && f.get("selectclusterlink")) return false; 
 		else return true;
 	};
 	this.filter_ = options.filter;
@@ -102,8 +104,8 @@ ol.interaction.SelectCluster.prototype.setMap = function(map)
 	if (this.map_) this.map_.removeLayer(this.overlayLayer_);
 
 	this.map_ = map;
-	// this.overlayLayer_.setMap(map);
-	map.addLayer(this.overlayLayer_);
+	this.overlayLayer_.setMap(map);
+	// map.addLayer(this.overlayLayer_);
 
 	if (map && map.getView()) 
 	{	map.getView().on('change:resolution', this.clear, this);
@@ -241,8 +243,16 @@ ol.interaction.SelectCluster.prototype.animateCluster_ = function(center)
 			{	var imgs = st[s].getImage();
 				var sc = imgs.getScale();
 				imgs.setScale(ratio); // setImageStyle don't check retina
-				vectorContext.setImageStyle(imgs);
-				vectorContext.drawPointGeometry(geo, null);
+				// OL3 > v3.14
+				if (vectorContext.setStyle)
+				{	vectorContext.setStyle(st[s]);
+					vectorContext.drawGeometry(geo);
+				}
+				// older version
+				else
+				{	vectorContext.setImageStyle(imgs);
+					vectorContext.drawPointGeometry(geo);
+				}
 				imgs.setScale(sc);
 			}
 		}

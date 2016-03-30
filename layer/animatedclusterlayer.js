@@ -132,7 +132,7 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 		var stylefn = (typeof(style) == 'function') ? style : style.length ? function(){ return style; } : function(){ return [style]; } ;
 		// Layer opacity
 		e.context.save();
-		e.context.globalAlpha = a.opacity;
+		e.context.globalAlpha = this.getOpacity();
 		// Retina device
 		var ratio = e.frameState.pixelRatio;
 		for (var i=0, c; c=a.clusters[i]; i++)
@@ -147,21 +147,34 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 			}
 			// Draw feature
 			var st = stylefn(c.f, resolution);
-			/* Preserve layer opacity (globalAlpha) */
+			/* Preserve pixel ration on retina */
 			var geo = new ol.geom.Point(pt);
 			for (var k=0; s=st[k]; k++)
-			{	var imgs = s.getImage();
+			{	
+				var imgs = s.getImage();
 				var sc = imgs.getScale(); 
-				imgs.setScale(ratio); // setImageStyle don't check retina
-				vectorContext.setImageStyle(imgs);
-				vectorContext.setTextStyle(s.getText());
-				vectorContext.drawPointGeometry(geo);
+				imgs.setScale(sc*ratio); // setImageStyle don't check retina
+				// OL3 > v3.14
+				if (vectorContext.setStyle)
+				{	vectorContext.setStyle(s);
+					vectorContext.drawGeometry(geo);
+				}
+				// older version
+				else
+				{	vectorContext.setImageStyle(imgs);
+					vectorContext.setTextStyle(s.getText());
+					vectorContext.drawPointGeometry(geo);
+				}
 				imgs.setScale(sc);
 			}
 			/*/
 			var f = new ol.Feature(new ol.geom.Point(pt));
 			for (var k=0; s=st[k]; k++)
-			{	vectorContext.drawFeature(f, s);
+			{	var imgs = s.getImage();
+				var sc = imgs.getScale(); 
+				imgs.setScale(sc*ratio); // drawFeature don't check retina
+				vectorContext.drawFeature(f, s);
+				imgs.setScale(sc);
 			}
 			/**/
 		}
