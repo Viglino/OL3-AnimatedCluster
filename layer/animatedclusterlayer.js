@@ -28,7 +28,8 @@ ol.layer.AnimatedCluster = function(opt_options)
 	this.set('animationMethod', options.animationMethod || ol.easing.easeOut);
 
 	// Save cluster before change
-	this.getSource().on('change', this.saveCluster, this);
+	//this.getSource().on('change', this.saveCluster, this);
+	this.on('change', this.saveCluster, this);
 	// Animate the cluster
 	this.on('precompose', this.animate, this)
 	this.on('postcompose', this.postanimate, this)
@@ -39,7 +40,7 @@ ol.inherits (ol.layer.AnimatedCluster, ol.layer.Vector);
 */
 ol.layer.AnimatedCluster.prototype.saveCluster = function()
 {	this.oldcluster.clear();
-	if (!this.get('animationDuration')) return;
+	if (!this.get('animationDuration') || !this.getSource()) return;
 	var features = this.getSource().getFeatures();
 	if (features.length && features[0].get('features'))
 	{	this.oldcluster.addFeatures (this.clusters);
