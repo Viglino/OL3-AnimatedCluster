@@ -241,8 +241,11 @@ ol.interaction.SelectCluster.prototype.animateCluster_ = function(center)
 			var st = stylefn(feature, res);
 			for (var s=0; s<st.length; s++)
 			{	var imgs = st[s].getImage();
-				var sc = imgs.getScale();
-				imgs.setScale(ratio); // setImageStyle don't check retina
+				var sc;
+				if (imgs)
+				{	sc = imgs.getScale();
+					imgs.setScale(ratio); // setImageStyle don't check retina
+				}
 				// OL3 > v3.14
 				if (vectorContext.setStyle)
 				{	vectorContext.setStyle(st[s]);
@@ -253,7 +256,7 @@ ol.interaction.SelectCluster.prototype.animateCluster_ = function(center)
 				{	vectorContext.setImageStyle(imgs);
 					vectorContext.drawPointGeometry(geo);
 				}
-				imgs.setScale(sc);
+				if (imgs) imgs.setScale(sc);
 			}
 		}
 		// Stop animation and restore cluster visibility

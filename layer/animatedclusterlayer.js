@@ -28,8 +28,7 @@ ol.layer.AnimatedCluster = function(opt_options)
 	this.set('animationMethod', options.animationMethod || ol.easing.easeOut);
 
 	// Save cluster before change
-	//this.getSource().on('change', this.saveCluster, this);
-	this.on('change', this.saveCluster, this);
+	this.getSource().on('change', this.saveCluster, this);
 	// Animate the cluster
 	this.on('precompose', this.animate, this)
 	this.on('postcompose', this.postanimate, this)
@@ -40,7 +39,7 @@ ol.inherits (ol.layer.AnimatedCluster, ol.layer.Vector);
 */
 ol.layer.AnimatedCluster.prototype.saveCluster = function()
 {	this.oldcluster.clear();
-	if (!this.get('animationDuration') || !this.getSource()) return;
+	if (!this.get('animationDuration')) return;
 	var features = this.getSource().getFeatures();
 	if (features.length && features[0].get('features'))
 	{	this.oldcluster.addFeatures (this.clusters);
@@ -151,10 +150,12 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 			/* Preserve pixel ration on retina */
 			var geo = new ol.geom.Point(pt);
 			for (var k=0; s=st[k]; k++)
-			{	
-				var imgs = s.getImage();
-				var sc = imgs.getScale(); 
-				imgs.setScale(sc*ratio); // setImageStyle don't check retina
+			{	var imgs = s.getImage();
+				var sc
+				if (imgs)
+				{	sc = imgs.getScale(); 
+					imgs.setScale(sc*ratio); // setImageStyle don't check retina
+				}
 				// OL3 > v3.14
 				if (vectorContext.setStyle)
 				{	vectorContext.setStyle(s);
@@ -166,7 +167,7 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 					vectorContext.setTextStyle(s.getText());
 					vectorContext.drawPointGeometry(geo);
 				}
-				imgs.setScale(sc);
+				if (imgs) imgs.setScale(sc);
 			}
 			/*/
 			var f = new ol.Feature(new ol.geom.Point(pt));
