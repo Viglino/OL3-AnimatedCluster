@@ -101,9 +101,10 @@
 					{	image: new ol.style.Circle(
 						{	radius: radius,
 							stroke: new ol.style.Stroke(
-							{	color:"rgba("+color+",0.5)", 
-								width:15 ,
-								lineDash: dash
+							{	color: "rgba("+color+",0.5)", 
+								width: 15 ,
+								lineDash: dash,
+								lineCap: "butt"
 							}),
 							fill: new ol.style.Fill(
 							{	color:"rgba("+color+",1)"
