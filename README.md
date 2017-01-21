@@ -39,7 +39,7 @@ var clusterLayer = new ol.layer.AnimatedCluster(
 // Add the layer to the map
 map.addLayer(clusterLayer);
 ```
-The getStye function will customize the clusters symbolisation.
+The getStyle function will customize the clusters symbolisation.
 
 Look at the [standard OL3 cluster example](http://openlayers.org/en/master/examples/cluster.html) or [the repo example](http://viglino.github.io/OL3-AnimatedCluster) to know how to define such a function.
 
