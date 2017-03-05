@@ -21,6 +21,7 @@
 	
 	<script type="text/javascript" src="interaction/selectclusterinteraction.js"></script>
 	<script type="text/javascript" src="layer/animatedclusterlayer.js"></script>
+	<script type="text/javascript" src="../ol3-ext/utils/ol.geom.convexhull.js"></script>
 
 	<link rel="stylesheet" href="style.css" />
 
@@ -32,11 +33,14 @@
 	<p class="info">
 		<i>ol.layer.AnimatedCluster</i> is a layer that animates clusters on zoom change. 
 		The layer is created with an ol.source.Cluster as standard cluster vector layers.
-		</br>
+		<br/>
 		<i>ol.interaction.SelectCluster</i> is a select interaction.
 		On select cluster springs apart to reveal the features.
 		The revealed features are themselves selectable.
 		Revealed features are themselves a cluster with an attribute 'features' that contain the original feature. 
+		<br/>
+		The example uses the convex envelope calculation to draw a polygon around the points of the cluster 
+		(see <a href="http://viglino.github.io/ol3-ext/examples/map.convexhull.html">ol3-ext convex hull example</a>).
 	</p>
 
 	<!-- DIV pour la carte -->
@@ -56,6 +60,9 @@
 		<br />
 		<input id="haslink" type="checkbox" checked="checked" onchange="selectCluster.clear();" />
 		<label for="haslink">show links on select</label>
+		<h2>Style:</h2>
+		<input id="convexhull" type="checkbox" onchange="selectCluster.clear();" />
+		<label for="convexhull">display convex envelope</label>
 	</div>
 	<div class="infos"></div>
 
@@ -97,7 +104,7 @@
 				var radius = Math.max(8, Math.min(size*0.75, 20));
 				var dash = 2*Math.PI*radius/6;
 				var dash = [ 0, dash, dash, dash, dash, dash, dash ];
-				style = styleCache[size] = [ new ol.style.Style(
+				style = styleCache[size] = new ol.style.Style(
 					{	image: new ol.style.Circle(
 						{	radius: radius,
 							stroke: new ol.style.Stroke(
@@ -116,10 +123,9 @@
 							{	color: '#fff'
 							})
 						})
-					})
-				];
+					});
 			}
-			return style;
+			return [style];
 		}
 
 		// Cluster Source
@@ -169,6 +175,36 @@
 				// Feature style when it springs apart
 				featureStyle: function()
 				{	return [ $("#haslink").prop('checked') ? style1:style0 ]
+				},
+				// selectCluster: false,	// disable cluster selection
+				// Style to draw cluster when selected
+				style: function(f,res)
+				{	var cluster = f.get('features');
+					if (cluster.length>1)
+					{	var s = getStyle(f,res);
+						if ($("#convexhull").prop("checked") && ol.coordinate.convexHull)
+						{	var coords = [];
+							for (i=0; i<cluster.length; i++) coords.push(cluster[i].getGeometry().getFirstCoordinate());
+							var chull = ol.coordinate.convexHull(coords);
+							s.push ( new ol.style.Style(
+								{	stroke: new ol.style.Stroke({ color: "rgba(0,0,192,0.5)", width:2 }),
+									fill: new ol.style.Fill({ color: "rgba(0,0,192,0.3)" }),
+									geometry: new ol.geom.Polygon([chull]),
+									zIndex: 1
+								}));
+						}
+						return s;
+					}
+					else 
+					{	return [
+							new ol.style.Style(
+							{	image: new ol.style.Circle (
+								{	stroke: new ol.style.Stroke({ color: "rgba(0,0,192,0.5)", width:2 }),
+									fill: new ol.style.Fill({ color: "rgba(0,0,192,0.3)" }),
+									radius:5
+								})
+							})];
+					}
 				}
 			});
 		map.addInteraction(selectCluster);

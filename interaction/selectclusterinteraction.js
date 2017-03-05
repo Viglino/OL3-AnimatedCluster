@@ -16,6 +16,7 @@
  * Additionnal options
  * - 'featureStyle' {ol.style} option is used to style the revealed features 
  *    as the 'style' option is used by the Select interaction.
+ * - 'selectCluster' {boolean} false if you don't want to get cluster selected
  * - 'PointRadius' {Number} option is used to calculate distance between the features
  * - 'spiral' {bool} option mean you want the feature to be placed on a spiral (or a circle)
  * - 'circleMaxObject' {Number} option is the number of object that can be place on a circle
@@ -38,6 +39,7 @@ ol.interaction.SelectCluster = function(options)
 	this.spiral = (options.spiral !== false);
 	this.animate = options.animate;
 	this.animationDuration = options.animationDuration || 500;
+	this.selectCluster_ = (options.selectCluster !== false);
 
 	// Create a new overlay layer for 
 	var overlay = this.overlayLayer_ = new ol.layer.Vector(
@@ -127,7 +129,7 @@ ol.interaction.SelectCluster.prototype.clear = function()
  */
 ol.interaction.SelectCluster.prototype.getLayer = function() 
 {	return this.overlayLayer_;
-}
+};
 
 /**
  * Select a cluster 
@@ -153,9 +155,9 @@ ol.interaction.SelectCluster.prototype.selectCluster = function (e)
 	var cluster = feature.get('features');
 	// Not a cluster (or just one feature)
 	if (!cluster || cluster.length==1) return;
-	
+
 	// Remove cluster from selection
-	this.getFeatures().clear();
+	if (!this.selectCluster_) this.getFeatures().clear();
 
 	var center = feature.getGeometry().getCoordinates();
 	// Pixel size in map unit
@@ -202,7 +204,7 @@ ol.interaction.SelectCluster.prototype.selectCluster = function (e)
 	}
 
 	if (this.animate) this.animateCluster_(center);
-}
+};
 
 /**
  * Animate the cluster and spread out the features
@@ -273,4 +275,4 @@ ol.interaction.SelectCluster.prototype.animateCluster_ = function(center)
 	// Start a new postcompose animation
 	this.listenerKey_ = this.map_.on('postcompose', animate, this);
 	//select.map_.renderSync();
-}
+};
