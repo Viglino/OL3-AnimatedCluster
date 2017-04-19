@@ -30,8 +30,8 @@ ol.layer.AnimatedCluster = function(opt_options)
 	// Save cluster before change
 	this.getSource().on('change', this.saveCluster, this);
 	// Animate the cluster
-	this.on('precompose', this.animate, this)
-	this.on('postcompose', this.postanimate, this)
+	this.on('precompose', this.animate, this);
+	this.on('postcompose', this.postanimate, this);
 };
 ol.inherits (ol.layer.AnimatedCluster, ol.layer.Vector);
 
@@ -46,7 +46,7 @@ ol.layer.AnimatedCluster.prototype.saveCluster = function()
 		this.clusters = features.slice(0);
 		this.sourceChanged = true;
 	}
-}
+};
 
 /** @private Get the cluster that contains a feature
 */
@@ -62,7 +62,7 @@ ol.layer.AnimatedCluster.prototype.getClusterForFeature = function(f, cluster)
 		}
 	}
 	return false;
-}
+};
 
 /** @private 
 */
@@ -70,7 +70,7 @@ ol.layer.AnimatedCluster.prototype.stopAnimation = function()
 {	this.animation.start = false;
 	this.animation.cA = [];
 	this.animation.cB = [];
-}
+};
 
 /** @private animate the cluster
 */
@@ -105,7 +105,7 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 			}
 		}
 		// Save state
-		a.resolution = resolution
+		a.resolution = resolution;
 		this.sourceChanged = false;
 
 		// No cluster or too much to animate
@@ -151,7 +151,7 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 			var geo = new ol.geom.Point(pt);
 			for (var k=0; s=st[k]; k++)
 			{	var imgs = s.getImage();
-				var sc
+				var sc;
 				if (imgs)
 				{	sc = imgs.getScale(); 
 					imgs.setScale(sc*ratio); // setImageStyle don't check retina
@@ -193,7 +193,7 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 	}
 
 	return;
-}
+};
 
 /** @private remove clipping after the layer is drawn
 */
@@ -202,4 +202,4 @@ ol.layer.AnimatedCluster.prototype.postanimate = function(e)
 	{	e.context.restore();
 		this.clip_ = false;
 	}
-}
+};
