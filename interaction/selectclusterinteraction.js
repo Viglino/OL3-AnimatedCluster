@@ -60,7 +60,7 @@ ol.interaction.SelectCluster = function(options)
 		{	var fn = options.layers;
 			options.layers = function(layer)
 			{	return (layer===overlay || fn(layer));
-			}
+			};
 		}
 		else if (options.layers.push)
 		{	options.layers.push(this.overlayLayer_);
@@ -74,7 +74,7 @@ ol.interaction.SelectCluster = function(options)
 		{	//if (l===overlay && f.get("selectclusterlink")) return false;
 			if (!l && f.get("selectclusterlink")) return false;
 			else return fn(f,l);
-		}
+		};
 	}
 	else options.filter = function(f,l) 
 	{	//if (l===overlay && f.get("selectclusterlink")) return false; 
@@ -121,7 +121,7 @@ ol.interaction.SelectCluster.prototype.setMap = function(map)
 ol.interaction.SelectCluster.prototype.clear = function() 
 {	this.getFeatures().clear();
 	this.overlayLayer_.getSource().clear();
-}
+};
 
 /**
  * Get the layer for the revealed features
