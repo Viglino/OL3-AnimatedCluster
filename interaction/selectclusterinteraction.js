@@ -98,7 +98,7 @@ ol.inherits(ol.interaction.SelectCluster, ol.interaction.Select);
  */
 ol.interaction.SelectCluster.prototype.setMap = function(map) 
 {	if (this.getMap())
-	{	if(this.getMap().getView()) 
+	{	if (this.getMap().getView()) 
 		{	this.getMap().getView().un('change:resolution', this.clear, this);
 		}
 		this.getMap().removeLayer(this.overlayLayer_);
