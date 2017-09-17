@@ -241,11 +241,12 @@ ol.interaction.SelectCluster.prototype.animateCluster_ = function(center)
 			// Image style
 			var st = stylefn(feature, res);
 			for (var s=0; s<st.length; s++)
-			{	var imgs = st[s].getImage();
-				var sc;
+			{	var sc;
+				// OL < v4.3 : setImageStyle doesn't check retina
+				var imgs = ol.Map.prototype.getFeaturesAtPixel ? false : st[s].getImage();
 				if (imgs)
 				{	sc = imgs.getScale();
-					imgs.setScale(ratio); // setImageStyle don't check retina
+					imgs.setScale(ratio); 
 				}
 				// OL3 > v3.14
 				if (vectorContext.setStyle)

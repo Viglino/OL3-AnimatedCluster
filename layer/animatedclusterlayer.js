@@ -150,7 +150,7 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 			/* Preserve pixel ration on retina */
 			var geo = new ol.geom.Point(pt);
 			for (var k=0; s=st[k]; k++)
-			{	var imgs = s.getImage();
+			{	var imgs = ol.Map.prototype.getFeaturesAtPixel ? false : s.getImage();
 				var sc;
 				if (imgs)
 				{	sc = imgs.getScale(); 
