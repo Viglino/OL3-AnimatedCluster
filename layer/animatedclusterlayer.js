@@ -150,11 +150,12 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 			/* Preserve pixel ration on retina */
 			var geo = new ol.geom.Point(pt);
 			for (var k=0; s=st[k]; k++)
-			{	var imgs = ol.Map.prototype.getFeaturesAtPixel ? false : s.getImage();
-				var sc;
+			{	var sc;
+				// OL < v4.3 : setImageStyle doesn't check retina
+				var imgs = ol.Map.prototype.getFeaturesAtPixel ? false : s.getImage();
 				if (imgs)
 				{	sc = imgs.getScale(); 
-					imgs.setScale(sc*ratio); // setImageStyle don't check retina
+					imgs.setScale(sc*ratio); 
 				}
 				// OL3 > v3.14
 				if (vectorContext.setStyle)
