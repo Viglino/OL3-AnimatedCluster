@@ -1,5 +1,5 @@
 # OL3-AnimatedCluster
-A cluster layer for OpenLayers 3 (OL3)  that animates clusters on zoom change and a select interaction that spread out cluster to allow feature selection  in it.
+A cluster layer for [OpenLayers](https://github.com/openlayers/openlayers) (ol3/ol4) that animates clusters on zoom change and a select interaction that spread out cluster to allow feature selection in it.
 
 Inspired by [acanimal/AnimatedCluster](https://github.com/acanimal/AnimatedCluster).
 
