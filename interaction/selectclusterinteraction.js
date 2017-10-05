@@ -104,7 +104,7 @@ ol.interaction.SelectCluster.prototype.setMap = function(map)
 		this.getMap().removeLayer(this.overlayLayer_);
 	}
 
-	// map.addLayer(this.overlayLayer_);
+	// Add overlay before the select to appeare underneath
 	this.overlayLayer_.setMap(map);
 	
 	ol.interaction.Select.prototype.setMap.call (this, map);
