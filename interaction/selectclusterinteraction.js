@@ -104,9 +104,10 @@ ol.interaction.SelectCluster.prototype.setMap = function(map)
 		this.getMap().removeLayer(this.overlayLayer_);
 	}
 
-	ol.interaction.Select.prototype.setMap.call (this, map);
-	this.overlayLayer_.setMap(map);
 	// map.addLayer(this.overlayLayer_);
+	this.overlayLayer_.setMap(map);
+	
+	ol.interaction.Select.prototype.setMap.call (this, map);
 
 	if (map && map.getView()) 
 	{	map.getView().on('change:resolution', this.clear, this);
