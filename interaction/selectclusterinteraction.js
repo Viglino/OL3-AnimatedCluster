@@ -13,20 +13,18 @@
  * Revealed features are selectable and you can pick the one you meant.
  * Revealed features are themselves a cluster with an attribute features that contain the original feature.
  * 
- * Additionnal options
- * - 'featureStyle' {ol.style} option is used to style the revealed features 
- *    as the 'style' option is used by the Select interaction.
- * - 'selectCluster' {boolean} false if you don't want to get cluster selected
- * - 'PointRadius' {Number} option is used to calculate distance between the features
- * - 'spiral' {bool} option mean you want the feature to be placed on a spiral (or a circle)
- * - 'circleMaxObject' {Number} option is the number of object that can be place on a circle
- * - 'maxObjects' {Number} option is the number of object that can be drawn, other are hidden
- * - 'animation' {bool} option means the cluster will animate when features spread out, default is false
- * - 'animationDuration' {Number} option animation duration in ms, default is 500ms
  *
  * @constructor
  * @extends {ol.interaction.Select}
- * @param {olx.interaction.SelectOptions=} opt_options Options.
+ * @param {} options extends olx.interaction.SelectOptions.
+ *  @param {ol.style} options.featureStyle is used to style the revealed features as the 'style' option is used by the Select interaction.
+ *  @param {boolean} options.selectCluster false if you don't want to get cluster selected
+ *  @param {Number} options.PointRadius is used to calculate distance between the features
+ *  @param {bool} options.spiral mean you want the feature to be placed on a spiral (or a circle)
+ *  @param {Number} options.circleMaxObject is the number of object that can be place on a circle
+ *  @param {Number} options.maxObjects is the number of object that can be drawn, other are hidden
+ *  @param {bool} options.animation means the cluster will animate when features spread out, default is false
+ *  @param {Number} options.animationDuration animation duration in ms, default is 500ms
  * @fires ol.interaction.SelectEvent
  * @api stable
  */

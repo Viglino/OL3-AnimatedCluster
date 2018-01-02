@@ -11,10 +11,12 @@
 */
 
 /**
-* @constructor AnimatedCluster
+* AnimatedCluster
+* @constructor 
 * @extends {ol.layer.Vector}
 * @param {olx.layer.AnimatedClusterOptions=} options
-* @todo 
+*	@param {Number} options.animationDuration animation duration in ms, default 700
+*	@param {function} options.animationMethod animation method (easing function, default ol.easing.easeOut
 */
 ol.layer.AnimatedCluster = function(opt_options)
 {	var options = opt_options || {};
@@ -35,8 +37,9 @@ ol.layer.AnimatedCluster = function(opt_options)
 };
 ol.inherits (ol.layer.AnimatedCluster, ol.layer.Vector);
 
-/** @private save cluster features before change
-*/
+/** save cluster features before change
+ * @private 
+ */
 ol.layer.AnimatedCluster.prototype.saveCluster = function()
 {	this.oldcluster.clear();
 	if (!this.get('animationDuration')) return;
@@ -48,8 +51,10 @@ ol.layer.AnimatedCluster.prototype.saveCluster = function()
 	}
 };
 
-/** @private Get the cluster that contains a feature
-*/
+/** 
+ * Get the cluster that contains a feature
+ * @private 
+ */
 ol.layer.AnimatedCluster.prototype.getClusterForFeature = function(f, cluster)
 {	for (var j=0, c; c=cluster[j]; j++)
 	{	var features = cluster[j].get('features');
@@ -72,8 +77,10 @@ ol.layer.AnimatedCluster.prototype.stopAnimation = function()
 	this.animation.cB = [];
 };
 
-/** @private animate the cluster
-*/
+/** 
+ * animate the cluster
+ * @private 
+ */
 ol.layer.AnimatedCluster.prototype.animate = function(e)
 {	var duration = this.get('animationDuration');
 	if (!duration) return;
@@ -196,8 +203,10 @@ ol.layer.AnimatedCluster.prototype.animate = function(e)
 	return;
 };
 
-/** @private remove clipping after the layer is drawn
-*/
+/** 
+ * remove clipping after the layer is drawn
+ * @private 
+ */
 ol.layer.AnimatedCluster.prototype.postanimate = function(e)
 {	if (this.clip_)
 	{	e.context.restore();
