@@ -1,4 +1,7 @@
 # OL3-AnimatedCluster
+
+*[DEPRECATED]* OL3-AnimatedCluster is now part of the [ol-ext](https://github.com/Viglino/ol-ext) project and is now available on NPM.
+
 A cluster layer for [OpenLayers](https://github.com/openlayers/openlayers) (ol3/ol4) that animates clusters on zoom change and a select interaction that spread out cluster to allow feature selection in it.
 
 Inspired by [acanimal/AnimatedCluster](https://github.com/acanimal/AnimatedCluster).
