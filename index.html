@@ -16,32 +16,62 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
     <!-- OL3 -->
-	<link rel="stylesheet" href="http://openlayers.org/en/master/css/ol.css" />
-	<script type="text/javascript" src="http://openlayers.org/en/latest/build/ol.js"></script>
+	<link rel="stylesheet" href="http://openlayers.org/en/v4.6.5/css/ol.css" />
+	<script type="text/javascript" src="http://openlayers.org/en/v4.6.5/build/ol.js"></script>
 	
 	<script type="text/javascript" src="interaction/selectclusterinteraction.js"></script>
 	<script type="text/javascript" src="layer/animatedclusterlayer.js"></script>
-	<script type="text/javascript" src="../ol3-ext/utils/ol.geom.convexhull.js"></script>
 
 	<link rel="stylesheet" href="style.css" />
+	<style>
+	.warning {
+		-webkit-background-image: linear-gradient(
+			-45deg, 
+			currentColor 25%, 
+			transparent 25%, 
+			transparent 50%, 
+			currentColor 50%, 
+			currentColor 75%, 
+			transparent 75%, 
+			transparent
+			);
+		background-image: linear-gradient(
+			-45deg, 
+			rgba(255, 255, 0, 0.4) 25%, 
+			rgba(255, 166, 0, 0.4) 25%, 
+			rgba(255, 166, 0, 0.4) 50%, 
+			rgba(255, 255, 0, 0.4) 50%, 
+			rgba(255, 255, 0, 0.4) 75%, 
+			rgba(255, 166, 0, 0.4) 75%, 
+			rgba(255, 166, 0, 0.4)
+			);
+		-webkit-background-size: .2em .2em;
+		background-size: 1em 1em;
+		padding: 1em;
+		font-weight: bold;
+		color: #800
+	}	
+	</style>
 
 </head>
 <body >
 	<a href="https://github.com/Viglino/OL3-AnimatedCluster"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 
 	<h1>OL3-AnimatedCluster</h1>
-	<p class="info">
-		<i>ol.layer.AnimatedCluster</i> is a layer that animates clusters on zoom change. 
-		The layer is created with an ol.source.Cluster as standard cluster vector layers.
-		<br/>
-		<i>ol.interaction.SelectCluster</i> is a select interaction.
-		On select cluster springs apart to reveal the features.
-		The revealed features are themselves selectable.
-		Revealed features are themselves a cluster with an attribute 'features' that contain the original feature. 
-		<br/>
-		The example uses the convex envelope calculation to draw a polygon around the points of the cluster 
-		(see <a href="http://viglino.github.io/ol3-ext/examples/map.convexhull.html">ol3-ext convex hull example</a>).
-	</p>
+	<div class="info">
+		<p class="warning">
+				[DEPRECATED] OL3-AnimatedCluster is now part of the <a href="https://github.com/Viglino/ol-ext">ol-ext project</a> and is now available on NPM.
+		</p>
+		<p>
+			<i>ol.layer.AnimatedCluster</i> is a layer that animates clusters on zoom change. 
+			The layer is created with an ol.source.Cluster as standard cluster vector layers.
+			<br/>
+			<i>ol.interaction.SelectCluster</i> is a select interaction.
+			On select cluster springs apart to reveal the features.
+			The revealed features are themselves selectable.
+			Revealed features are themselves a cluster with an attribute 'features' that contain the original feature. 
+		</p>
+	</div>
 
 	<!-- DIV pour la carte -->
 	<div id="map" style="width:600px; height:400px;"></div>
